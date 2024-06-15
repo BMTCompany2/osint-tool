@@ -1,8 +1,8 @@
 # imports
 import json
-
 from datetime import datetime, timedelta, timezone
 from langchain_community.document_loaders import RSSFeedLoader, PyPDFLoader
+
 
 class DocumentFetcher:
 
@@ -15,6 +15,7 @@ class DocumentFetcher:
         news_feeds = self._grab_news()
 
         comined_docs = gov_feeds + pdf_docs + news_feeds
+        
 
         print()
         print('Combined Feed Length')
@@ -22,6 +23,7 @@ class DocumentFetcher:
 
         return comined_docs
     
+
     def _grab_gov_comms(self):
         # Grab the RSS feed data
         print('Fetching gov docs...')
