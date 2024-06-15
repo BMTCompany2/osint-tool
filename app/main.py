@@ -5,18 +5,20 @@ from app.document_fetcher import DocumentFetcher
 def main():
     # initialize classes:
     document_fetcher = DocumentFetcher()
+    # ...intialize more moduels here
 
     try:
         # Grab report data
         report_data = document_fetcher.invoke()
 
         # Grab images
-
-        # Write Reports
+        # ...grab and analyze image module here
 
         # Grab aircraft data
+        # ...grab aircraft data here
 
         # Produce Content
+        # ...produce the report here
         
 
     except Exception as e:
