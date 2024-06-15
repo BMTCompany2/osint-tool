@@ -3,7 +3,8 @@ import json
 import matplotlib.pyplot as plt
 import pandas as pd
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-
+from langchain.vectorstores import Chroma
+from langchain.embeddings.openai import OpenAIEmbeddings
 
 class GenerateReport:
 
@@ -13,9 +14,14 @@ class GenerateReport:
     def invoke(self,data):
         #Split data into chunks
         splits = self._split_documents(data)
+        # vector db
+        vectordb = self._returnVectorDB(splits)
 
+        #Ask question
+        question = "Tips on being productive as an person"
+        docs = vectordb.similarity_search(question,k=3)
         # generate report
-        self.generate_sales_report(splits)
+        self.generate_sales_report(docs[0].page_content)
     
 
     def _split_documents(self,docs):
@@ -28,6 +34,17 @@ class GenerateReport:
         splits = text_splitter.split_documents(docs)
         return splits
     
+    def _returnVectorDB(self, splits):
+        embedding = OpenAIEmbeddings()
+        persist_directory = 'docs/chroma/'
+        vectordb = Chroma.from_documents(
+            documents=splits,
+            embedding=embedding,
+            persist_directory=persist_directory
+        )
+
+        print(vectordb._collection.count())
+        return vectordb
     def generate_sales_report(self,data):
        # Markdown content for the report
         report_md = """
