@@ -4,10 +4,6 @@ import json
 from datetime import datetime, timedelta, timezone
 from langchain_community.document_loaders import RSSFeedLoader, PyPDFLoader
 
-class DocumentFetcherError(Exception):
-
-    pass
-
 class DocumentFetcher:
 
     def __init__(self):
