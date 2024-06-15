@@ -8,17 +8,6 @@ class DocumentFetcherError(Exception):
 
     pass
 
-# class for storing the featured data
-class ContentData:
-    """Class for storing the featured data."""
-
-    def __init__(self, script, summary, category, tags, montage_url):
-        self.script = script
-        self.summary = summary
-        self.category = category
-        self.tags = tags
-        self.montage_url = montage_url
-
 class DocumentFetcher:
 
     def __init__(self):
