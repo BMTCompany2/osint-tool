@@ -2,7 +2,7 @@
 import json
 
 from datetime import datetime, timedelta, timezone
-from langchain_community.document_loaders import RSSFeedLoader
+from langchain_community.document_loaders import RSSFeedLoader, PyPDFLoader
 
 class DocumentFetcherError(Exception):
 
@@ -26,9 +26,10 @@ class DocumentFetcher:
 
     def invoke(self):
         gov_feeds = self._grab_gov_comms()
+        pdf_docs = self._grab_maritime_reports()
         news_feeds = self._grab_news()
 
-        comined_docs = gov_feeds + news_feeds
+        comined_docs = gov_feeds + pdf_docs + news_feeds
 
         print()
         print('Combined Feed Length')
@@ -68,6 +69,21 @@ class DocumentFetcher:
         print()
 
         return new_rss_docs
+    
+    def _grab_maritime_reports(self):
+        # Grab the RSS feed data
+        print('Fetching gov docs...')
+        PDF_PATH = "app/document_sources/ukmto_6-15.pdf"
+
+        PDFloader = PyPDFLoader(PDF_PATH)
+        pdfs = PDFloader.load()
+        pdf_docs = [pdfs]
+        
+        print('Number of DPF Docs')
+        print(len(pdf_docs))
+        print()
+
+        return pdf_docs
        
     def _grab_news(self):
         # Grab the RSS feed data
