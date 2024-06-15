@@ -1,0 +1,33 @@
+{
+    "aircraft": [
+      {
+        "icao24": "AE1234",
+        "callsign": "RCH123",
+        "type": "KC-135",
+        "registration": "62-3567",
+        "latitude": 20.5,
+        "longitude": 38.0,
+        "altitude": 24000,
+        "heading": 180,
+        "ground_speed": 450,
+        "squawk": "7500",
+        "last_contact": 1686758400,
+        "vertical_rate": 0
+      },
+      {
+        "icao24": "AE5678",
+        "callsign": "FORCE78",
+        "type": "RQ-4 Global Hawk",
+        "registration": "04-2025",
+        "latitude": 21.0,
+        "longitude": 38.5,
+        "altitude": 50000,
+        "heading": 90,
+        "ground_speed": 400,
+        "squawk": "7600",
+        "last_contact": 1686758500,
+        "vertical_rate": -100
+      }
+    ]
+  }
+  
