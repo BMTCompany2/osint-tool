@@ -1,0 +1,100 @@
+# imports
+import json
+
+from datetime import datetime, timedelta, timezone
+from langchain_community.document_loaders import RSSFeedLoader
+
+class DocumentFetcherError(Exception):
+
+    pass
+
+# class for storing the featured data
+class ContentData:
+    """Class for storing the featured data."""
+
+    def __init__(self, script, summary, category, tags, montage_url):
+        self.script = script
+        self.summary = summary
+        self.category = category
+        self.tags = tags
+        self.montage_url = montage_url
+
+class DocumentFetcher:
+
+    def __init__(self):
+        return
+
+    def invoke(self):
+        gov_feeds = self._grab_gov_comms()
+        news_feeds = self._grab_news()
+
+        comined_docs = gov_feeds + news_feeds
+
+        print()
+        print('Combined Feed Length')
+        print(len(comined_docs))
+
+        return comined_docs
+    
+    def _grab_gov_comms(self):
+        # Grab the RSS feed data
+        print('Fetching gov docs...')
+        RSS_CONFIG_PATH = "app/document_sources/gov_feeds.json"
+        feeds = []
+
+        with open(RSS_CONFIG_PATH, 'r') as file:
+            config_data = json.load(file)
+            feeds = config_data.get('gov_feeds', [])
+
+        RSSLoader = RSSFeedLoader(urls=feeds, show_progress_bar=True)
+        rss_docs = RSSLoader.load()
+
+        current_time = datetime.now(timezone.utc)
+        twenty_four_hours_ago = current_time - timedelta(hours=72)
+
+        new_rss_docs = []
+        for doc in rss_docs:
+            published_date = doc.metadata.get('publish_date')
+            if published_date is not None:
+                published_date = published_date.replace(tzinfo=timezone.utc)  # Make published_date offset-aware
+                if published_date > twenty_four_hours_ago:
+                    print('PUBLISHED DATE: ', published_date)
+                    new_rss_docs.append(doc)
+            else :
+                new_rss_docs.append(doc) 
+        
+        print('Number of Gov Docs')
+        print(len(new_rss_docs))
+        print()
+
+        return new_rss_docs
+       
+    def _grab_news(self):
+        # Grab the RSS feed data
+        print('Fetching news feeds...')
+        RSS_CONFIG_PATH = "app/document_sources/news_feeds.json"
+        feeds = []
+
+        with open(RSS_CONFIG_PATH, 'r') as file:
+            config_data = json.load(file)
+            feeds = config_data.get('news_feeds', [])
+
+        RSSLoader = RSSFeedLoader(urls=feeds, show_progress_bar=True)
+        rss_docs = RSSLoader.load()
+
+        current_time = datetime.now(timezone.utc)
+        twenty_four_hours_ago = current_time - timedelta(hours=72)
+
+        new_rss_docs = []
+        for doc in rss_docs:
+            published_date = doc.metadata.get('publish_date')
+            if published_date is not None:
+                published_date = published_date.replace(tzinfo=timezone.utc)  # Make published_date offset-aware
+                if published_date > twenty_four_hours_ago:
+                    print('PUBLISHED DATE: ', published_date)
+                    new_rss_docs.append(doc)
+        
+        print("Number of news docs:")
+        print(len(new_rss_docs))
+
+        return new_rss_docs

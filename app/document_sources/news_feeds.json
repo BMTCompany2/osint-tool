@@ -1,0 +1,10 @@
+{
+    "news_feeds": [
+      "https://www.defenseone.com/rss/all/",
+      "https://nationalinterest.org/feed",
+      "https://ukdefencejournal.org.uk/feed/",
+      "https://www.defensenews.com/arc/outboundfeeds/rss/category/naval/?outputType=xml",
+      "https://www.militarytimes.com/arc/outboundfeeds/rss/category/flashpoints/?outputType=xml"
+    ]
+  }
+  
