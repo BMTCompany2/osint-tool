@@ -1,10 +1,12 @@
 # imports
 from app.document_fetcher import DocumentFetcher
+from app.describe_image import DescribeImage
 
 # main
 def main():
     # initialize classes:
     document_fetcher = DocumentFetcher()
+    describe_image = DescribeImage()
     # ...intialize more moduels here
 
     try:
@@ -13,6 +15,10 @@ def main():
 
         # Grab images
         # ...grab and analyze image module here
+        image_path = '/Users/rishimadhok/Desktop/aircraft_carrier.png'
+        img_description = describe_image.invoke(image_path)
+
+        print (img_description)
 
         # Grab aircraft data
         # ...grab aircraft data here
