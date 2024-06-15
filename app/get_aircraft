@@ -1,0 +1,55 @@
+import os
+import logging
+import time
+from opensky_api import OpenSkyApi
+
+###########################
+# Get Vehicles & Aircraft #
+###########################
+
+# Setup basic logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+
+def fetch_and_process_states(api, bbox):
+    try:
+        # Fetch data from the API for the specified bounding box
+        states = api.get_states(bbox=bbox)
+        if states:
+            for state in states.states:
+                process_state_data(state)
+        else:
+            logging.info("No states data received within the specified bounding box.")
+    except Exception as e:
+        logging.error(f"Failed to fetch or process data: {e}")
+
+def process_state_data(state):
+    # Extract and log the data
+    try:
+        logging.info(f"Longitude: {state.longitude}, Latitude: {state.latitude}, "
+                     f"Barometric Altitude: {state.baro_altitude}, Velocity: {state.velocity}")
+    except AttributeError as e:
+        logging.error(f"Error extracting data: {e}")
+
+def main():
+    # Load credentials from environment variables
+    username = os.getenv('OPENSKY_USERNAME')
+    password = os.getenv('OPENSKY_PASSWORD')
+
+    # Define a 2km bounding box around Boeing Field in Seattle (lat: 47.528, long: -122.302)
+    bbox = (47.528 - 0.018, 47.528 + 0.018, -122.302 - 0.0235, -122.302 + 0.0235)
+    
+    # Initialize OpenSkyApi with authentication
+    api = OpenSkyApi(username=username, password=password)
+
+    # Set the update interval (e.g., 10 seconds)
+    update_interval = 10
+
+    while True:
+        logging.info("Fetching new data...")
+        fetch_and_process_states(api, bbox)
+        logging.info("Waiting for the next update...")
+        time.sleep(update_interval)
+
+# Run the main function
+if __name__ == "__main__":
+    main()
