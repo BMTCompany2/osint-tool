@@ -12,7 +12,8 @@
         "ground_speed": 450,
         "squawk": "7500",
         "last_contact": 1686758400,
-        "vertical_rate": 0
+        "vertical_rate": 0,
+        "img": "app/document_sources/kc135.jpg"
       },
       {
         "icao24": "AE5678",
@@ -26,7 +27,8 @@
         "ground_speed": 400,
         "squawk": "7600",
         "last_contact": 1686758500,
-        "vertical_rate": -100
+        "vertical_rate": -100,
+        "img": "app/document_sources/mq9.jpg"
       }
     ]
   }
